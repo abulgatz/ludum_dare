@@ -1,12 +1,6 @@
 package us.bulgatz_montgomery.evolution.level;
 
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glTexCoord2d;
-import static org.lwjgl.opengl.GL11.glVertex2d;
+import static org.lwjgl.opengl.GL11.*;
 
 import org.lwjgl.opengl.Display;
 
@@ -14,26 +8,64 @@ import us.bulgatz_montgomery.evolution.AABB;
 import us.bulgatz_montgomery.evolution.Texture;
 
 public class Platform {
-	protected AABB aabb;
-	protected Texture tex;
+	final int CAP_BB_WIDTH = 25;
 	
-	public Platform(int x, int y, int width, int height, Texture tex) {
-		this.aabb = new AABB(x, y, width, height);
-		this.tex = tex;
+	protected AABB aabb;
+	protected Texture center;
+	protected Texture leftCap;
+	protected Texture rightCap;
+	
+	public Platform(int x, int y, int width, int height, Texture center, Texture leftCap, Texture rightCap) {
+		this.aabb = new AABB(x - CAP_BB_WIDTH, y, width + 2 * CAP_BB_WIDTH, height);
+		this.center = center;
+		this.leftCap = leftCap;
+		this.rightCap = rightCap;
 	}
 	
 	public void render(int offX, int offY) {
-		tex.bind();
+		double centerWidth = aabb.width - CAP_BB_WIDTH - 14;
+		int x = aabb.x - offX - (leftCap.getWidth() - CAP_BB_WIDTH) + 14;
+		
+		// Left cap
+		glEnable(GL_BLEND);
+		leftCap.bind();
 		glBegin(GL_QUADS);
 			glTexCoord2d(0, 1);
-			glVertex2d(aabb.x - offX, aabb.y - offY);
+			glVertex2d(x, aabb.y - offY);
 			glTexCoord2d(1, 1);
-			glVertex2d(aabb.x - offX + aabb.width, aabb.y - offY);
+			glVertex2d(x + leftCap.getWidth(), aabb.y - offY);
 			glTexCoord2d(1, 0);
-			glVertex2d(aabb.x - offX + aabb.width, aabb.y - offY + aabb.height);
+			glVertex2d(x + leftCap.getWidth(), aabb.y - offY + leftCap.getHeight());
 			glTexCoord2d(0, 0);
-			glVertex2d(aabb.x - offX, aabb.y - offY + aabb.height);
+			glVertex2d(x, aabb.y - offY + leftCap.getHeight());
 		glEnd();
+		
+		x += leftCap.getWidth();
+		center.bind();
+		glBegin(GL_QUADS);
+			glTexCoord2d(0, 1);
+			glVertex2d(x, aabb.y - offY);
+			glTexCoord2d(centerWidth / 144.0, 1);
+			glVertex2d(x + centerWidth, aabb.y - offY);
+			glTexCoord2d(centerWidth / 144.0, 0);
+			glVertex2d(x + centerWidth, aabb.y - offY + center.getHeight());
+			glTexCoord2d(0, 0);
+			glVertex2d(x, aabb.y - offY + center.getHeight());
+		glEnd();
+		
+		x += centerWidth;
+		rightCap.bind();
+		glBegin(GL_QUADS);
+			glTexCoord2d(0, 1);
+			glVertex2d(x, aabb.y - offY);
+			glTexCoord2d(1, 1);
+			glVertex2d(x + rightCap.getWidth(), aabb.y - offY);
+			glTexCoord2d(1, 0);
+			glVertex2d(x + rightCap.getWidth(), aabb.y - offY + rightCap.getHeight());
+			glTexCoord2d(0, 0);
+			glVertex2d(x, aabb.y - offY + rightCap.getHeight());
+		glEnd();
+		glDisable(GL_BLEND);
 		glDisable(GL_TEXTURE_2D);
 	}
 	
@@ -42,10 +74,10 @@ public class Platform {
 	}
 
 	public Texture getTex() {
-		return tex;
+		return center;
 	}
 
 	public void setTex(Texture tex) {
-		this.tex = tex;
+		this.center = tex;
 	}
 }

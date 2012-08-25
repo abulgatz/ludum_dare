@@ -18,16 +18,10 @@ public class Main {
 	private static Player player;
 
 	public static void main(String[] args) {
-		Screen.init(800, 600, "LD24");
+		Screen.init(640, 480, "LD24");
 		
-		try {
-			BufferedImage texImg = ImageIO.read(new File("test.png"));
-			testTex = new Texture(texImg);
-		}
-		catch(IOException e) {
-			System.err.println("Failed to load image: " + e.getMessage());
+		if(!Assets.init())
 			return;
-		}
 		level = new Level();
 		player = new Player(level);
 		

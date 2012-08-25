@@ -104,6 +104,13 @@ public class Player {
 			else
 				velY = 0;
 		}
+		if(aabb.y < 0) {
+			aabb.y = 0;
+			// DIE
+		}
+		
+		// Try to collect clocks
+		level.collectClock(this);
 	}
 
 }
