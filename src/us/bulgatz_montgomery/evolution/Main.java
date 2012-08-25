@@ -15,9 +15,10 @@ public class Main {
 	private static boolean running = true;
 	private static Texture testTex;
 	private static Level level;
+	private static Player player;
 
 	public static void main(String[] args) {
-		Screen.init(400, 400, "LD24");
+		Screen.init(800, 600, "LD24");
 		
 		try {
 			BufferedImage texImg = ImageIO.read(new File("test.png"));
@@ -28,6 +29,7 @@ public class Main {
 			return;
 		}
 		level = new Level();
+		player = new Player();
 		
 		while(running) {
 			tick();
@@ -37,6 +39,7 @@ public class Main {
 	
 	public static void tick() {
 		Display.update();
+		player.think();
 		glClear(GL_COLOR_BUFFER_BIT);
 		render();
 		
@@ -47,6 +50,8 @@ public class Main {
 	}
 
 	private static void render() {
-		level.render(0, 0);
+		int startX = (int) (player.getX() - Display.getWidth() / 2);
+		level.render(startX, 0);
+		player.render();
 	}
 }

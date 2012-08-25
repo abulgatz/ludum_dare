@@ -30,22 +30,10 @@ public class Level {
 	public void render(int startX, int startY) {
 		for(Platform plat : platforms) {
 			if(plat.getX() + plat.getWidth() >= startX && plat.getX() < Display.getWidth() + startX) {
-				renderPlatform(plat, startX, startY);
+				plat.render(startX, startY);
 			}
 		}
 	}
 	
-	private void renderPlatform(Platform plat, int startX, int startY) {
-		plat.getTex().bind();
-		glBegin(GL_QUADS);
-			glTexCoord2d(0, 0);
-			glVertex2d(plat.getX() - startX, Display.getHeight() - (plat.getY() - startY));
-			glTexCoord2d(1, 0);
-			glVertex2d(plat.getX() - startX + plat.getWidth(), Display.getHeight() - (plat.getY() - startY));
-			glTexCoord2d(1, 1);
-			glVertex2d(plat.getX() - startX + plat.getWidth(), Display.getHeight() - (plat.getY() - startY + plat.getHeight()));
-			glTexCoord2d(0, 1);
-			glVertex2d(plat.getX() - startX, Display.getHeight() - (plat.getY() - startY + plat.getHeight()));
-		glEnd();
-	}
+	
 }

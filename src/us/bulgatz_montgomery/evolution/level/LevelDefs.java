@@ -23,7 +23,7 @@ public class LevelDefs {
 					System.err.println("Texture load failed!" + e.getMessage());
 					return list;
 				}
-				list.add(new Platform(20, 20, 200, 30, tex));
+				list.add(new Platform(0, 20, 200, 30, tex));
 				list.add(new Platform(50, 5, 300, 10, tex));
 				list.add(new Platform(600, 50, 500, 50, tex));
 				break;
