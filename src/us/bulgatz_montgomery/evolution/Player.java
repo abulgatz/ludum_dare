@@ -9,11 +9,15 @@ import us.bulgatz_montgomery.evolution.level.Level;
 
 public class Player {
 	final int speed = 3;
+	final int fallSpeed = 8;
+	final int jumpSpeed = 20;
 	
 	protected AABB aabb;
 	protected Texture tex;
 	protected Input input;
 	protected Level level;
+	
+	int velX, velY;
 	
 	public Player(Level level) {
 		aabb = new AABB(0, 200, 20, 20);
@@ -44,31 +48,61 @@ public class Player {
 
 	public void think() {
 		input.poll();
-		// Move 1 pixel at a time for precise collision
-		for(int i = 0; i < speed; i++) {
-			// Construct one here and reuse it instead of constructing one for each if-case
-			AABB newloc = new AABB(aabb);
-			if(input.keyDown(Keyboard.KEY_A)) {
+		
+		// Check for horizontal movement
+		// Construct one here and reuse it instead of constructing one for each if-case
+		AABB newloc = new AABB(aabb);
+		if(input.keyDown(Keyboard.KEY_A)) {
+			if(velX > -speed)
+				velX--;
+			// Move 1 pixel at a time for precise collision
+			for(int i = 0; i < Math.abs(velX); i++) {
 				newloc.x = aabb.x - 1;
 				if(!level.collidesPlatform(newloc))
 					aabb.x -= 1;
+				else
+					velX = 0;
 			}
-			if(input.keyDown(Keyboard.KEY_D)) {
+		}
+		else if(input.keyDown(Keyboard.KEY_D)) {
+			if(velX < speed)
+				velX++;
+			// Move 1 pixel at a time for precise collision
+			for(int i = 0; i < Math.abs(velX); i++) {
 				newloc.x = aabb.x + 1;
 				if(!level.collidesPlatform(newloc))
 					aabb.x += 1;
+				else
+					velX = 0;
 			}
-			newloc.x = aabb.x; // Just in case horizontal mvmt failed
-			if(input.keyDown(Keyboard.KEY_W)) {
-				newloc.y = aabb.y + 1;
-				if(!level.collidesPlatform(newloc))
-					aabb.y += 1;
-			}
-			if(input.keyDown(Keyboard.KEY_S)) {
-				newloc.y = aabb.y - 1;
-				if(!level.collidesPlatform(newloc))
-					aabb.y -= 1;
-			}
+		}
+		else {
+			if(velX < 0) velX++;
+			else if(velX > 0) velX--;
+		}
+		
+		// Jump
+		if(input.keyDown(Keyboard.KEY_W)) {
+			newloc = new AABB(aabb);
+			newloc.y--;
+			if(level.collidesPlatform(newloc))
+				velY = jumpSpeed;
+		}
+		
+		// Take care of gravity
+		newloc = new AABB(aabb);
+		if(velY > -fallSpeed)
+			velY--;
+		int fallDir;
+		if(velY == 0) fallDir = 0;
+		else fallDir = (velY / Math.abs(velY)); // +1=up, -1=down
+		// Move 1 pixel at a time for precise collision
+		for(int i = 0; i < Math.abs(velY); i++) {
+			newloc.y = aabb.y + fallDir;
+			if(!level.collidesPlatform(newloc))
+				aabb.y += fallDir;
+			else
+				velY = 0;
 		}
 	}
 
