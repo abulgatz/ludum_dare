@@ -1,7 +1,6 @@
 package us.bulgatz_montgomery.evolution;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 public class Input {

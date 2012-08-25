@@ -1,13 +1,16 @@
 package us.bulgatz_montgomery.evolution.level;
 
-import java.io.File;
-import java.io.IOException;
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glTexCoord2d;
+import static org.lwjgl.opengl.GL11.glVertex2d;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-
-import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.opengl.Display;
 
 import us.bulgatz_montgomery.evolution.AABB;
@@ -30,7 +33,6 @@ public class Level {
 		public static final int TEST_PERIOD = 0;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Level() {
 //		platforms = new List[TimePeriod.NUM_PERIODS];
 //		for(int i = 0; i < TimePeriod.NUM_PERIODS; i++) {

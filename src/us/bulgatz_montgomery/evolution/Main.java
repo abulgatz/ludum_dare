@@ -1,19 +1,22 @@
 package us.bulgatz_montgomery.evolution;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glTexCoord2d;
+import static org.lwjgl.opengl.GL11.glVertex2d;
 
 import org.lwjgl.opengl.Display;
 
 import us.bulgatz_montgomery.evolution.level.Level;
-import static org.lwjgl.opengl.GL11.*;
 
 public class Main {
 	private static boolean running = true;
-	private static Texture testTex;
 	private static Level level;
 	private static Player player;
 

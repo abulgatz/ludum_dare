@@ -1,9 +1,14 @@
 package us.bulgatz_montgomery.evolution.level;
 
-import static org.lwjgl.opengl.GL11.*;
-
-import org.lwjgl.opengl.Display;
-
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glTexCoord2d;
+import static org.lwjgl.opengl.GL11.glVertex2d;
 import us.bulgatz_montgomery.evolution.AABB;
 import us.bulgatz_montgomery.evolution.Texture;
 
