@@ -94,6 +94,9 @@ public class Level {
 		
 		entities = new ArrayList<Clock>();
 		entities.add(new Clock(50, 140, 36, 42, Assets.TEX_CLOCK));
+		entities.add(new Clock(100, 140, 36, 42, Assets.TEX_CLOCK));
+		entities.add(new Clock(150, 140, 36, 42, Assets.TEX_CLOCK));
+		entities.add(new Clock(250, 140, 36, 42, Assets.TEX_CLOCK));
 	}
 	
 }

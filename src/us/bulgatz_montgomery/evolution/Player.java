@@ -16,6 +16,7 @@ public class Player {
 	protected Texture tex;
 	protected Input input;
 	protected Level level;
+	protected int clocks;
 	
 	int velX, velY;
 	
@@ -44,6 +45,10 @@ public class Player {
 	
 	public AABB getAABB() {
 		return aabb;
+	}
+	
+	public int getClocks() {
+		return clocks;
 	}
 
 	public void think() {
@@ -110,7 +115,9 @@ public class Player {
 		}
 		
 		// Try to collect clocks
-		level.collectClock(this);
+		if(level.collectClock(this)) {
+			clocks++;
+		}
 	}
 
 }
