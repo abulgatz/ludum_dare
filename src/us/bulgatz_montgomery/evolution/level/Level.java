@@ -70,7 +70,7 @@ public class Level {
 	public boolean collidesPlatform(AABB aabb) {
 		for(Platform plat : platforms) {
 			if(aabb.collides(plat.getAABB())) {
-				System.out.println((aabb.x + aabb.width) + ": " + plat.getAABB().x);
+//				System.out.println((aabb.x + aabb.width) + ": " + plat.getAABB().x);
 				return true;
 			}
 		}
@@ -90,7 +90,7 @@ public class Level {
 	
 	private void genPast() {
 		platforms = new ArrayList<Platform>();
-		platforms.add(new Platform(0, 0, 274*2, 80, Assets.TEX_PLATFORM_REPEAT_PAST, Assets.TEX_PLATFORM_LEFT_PAST, Assets.TEX_PLATFORM_RIGHT_PAST));
+		platforms.add(new Platform(0, 0, 144*4, 80, Assets.TEX_PLATFORM_REPEAT_PAST, Assets.TEX_PLATFORM_LEFT_PAST, Assets.TEX_PLATFORM_RIGHT_PAST));
 		
 		entities = new ArrayList<Clock>();
 		entities.add(new Clock(50, 140, 36, 42, Assets.TEX_CLOCK));

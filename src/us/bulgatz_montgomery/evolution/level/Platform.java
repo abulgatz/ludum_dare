@@ -8,7 +8,7 @@ import us.bulgatz_montgomery.evolution.AABB;
 import us.bulgatz_montgomery.evolution.Texture;
 
 public class Platform {
-	final int CAP_BB_WIDTH = 25;
+	final int CAP_BB_WIDTH = 40;
 	
 	protected AABB aabb;
 	protected Texture center;
@@ -23,8 +23,8 @@ public class Platform {
 	}
 	
 	public void render(int offX, int offY) {
-		double centerWidth = aabb.width - CAP_BB_WIDTH - 14;
-		int x = aabb.x - offX - (leftCap.getWidth() - CAP_BB_WIDTH) + 14;
+		double centerWidth = aabb.width - 2 * CAP_BB_WIDTH;
+		int x = aabb.x + CAP_BB_WIDTH - leftCap.getWidth() - offX;
 		
 		// Left cap
 		glEnable(GL_BLEND);
@@ -45,9 +45,9 @@ public class Platform {
 		glBegin(GL_QUADS);
 			glTexCoord2d(0, 1);
 			glVertex2d(x, aabb.y - offY);
-			glTexCoord2d(centerWidth / 144.0, 1);
+			glTexCoord2d(centerWidth / center.getWidth(), 1);
 			glVertex2d(x + centerWidth, aabb.y - offY);
-			glTexCoord2d(centerWidth / 144.0, 0);
+			glTexCoord2d(centerWidth / center.getWidth(), 0);
 			glVertex2d(x + centerWidth, aabb.y - offY + center.getHeight());
 			glTexCoord2d(0, 0);
 			glVertex2d(x, aabb.y - offY + center.getHeight());
