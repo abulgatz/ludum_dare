@@ -29,11 +29,20 @@ public class Main {
 			return;
 		}
 		level = new Level();
-		player = new Player();
+		player = new Player(level);
 		
+		int frames = 0;
+		long lastTime = System.nanoTime();
+		long delay = 1000000000L; // 1 second
 		while(running) {
+			frames++;
 			tick();
 			Display.sync(60);
+			if(System.nanoTime() > lastTime + delay) {
+				System.out.println("FPS: " + frames);
+				lastTime = System.nanoTime();
+				frames = 0;
+			}
 		}
 	}
 	
@@ -50,7 +59,7 @@ public class Main {
 	}
 
 	private static void render() {
-		int startX = (int) (player.getX() - Display.getWidth() / 2);
+		int startX = (int) (player.getAABB().x + player.getAABB().width / 2 - Display.getWidth() / 2);
 		level.render(startX, 0);
 		player.render();
 	}

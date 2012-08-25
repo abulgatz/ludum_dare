@@ -5,6 +5,7 @@ import java.util.List;
 import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.opengl.Display;
 
+import us.bulgatz_montgomery.evolution.AABB;
 import us.bulgatz_montgomery.evolution.Texture;
 
 public class Level {
@@ -29,11 +30,21 @@ public class Level {
 	
 	public void render(int startX, int startY) {
 		for(Platform plat : platforms) {
-			if(plat.getX() + plat.getWidth() >= startX && plat.getX() < Display.getWidth() + startX) {
+			AABB aabb = plat.getAABB();
+			if(aabb.x + aabb.width >= startX && aabb.x < Display.getWidth() + startX) {
 				plat.render(startX, startY);
 			}
 		}
 	}
-	
+
+	public boolean collidesPlatform(AABB aabb) {
+		for(Platform plat : platforms) {
+			if(aabb.collides(plat.getAABB())) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 	
 }

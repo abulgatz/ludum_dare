@@ -10,18 +10,15 @@ import static org.lwjgl.opengl.GL11.glVertex2d;
 
 import org.lwjgl.opengl.Display;
 
+import us.bulgatz_montgomery.evolution.AABB;
 import us.bulgatz_montgomery.evolution.Texture;
 
 public class Platform {
-	protected int x, y;
-	protected int width, height;
+	protected AABB aabb;
 	protected Texture tex;
 	
 	public Platform(int x, int y, int width, int height, Texture tex) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
+		this.aabb = new AABB(x, y, width, height);
 		this.tex = tex;
 	}
 	
@@ -29,47 +26,19 @@ public class Platform {
 		tex.bind();
 		glBegin(GL_QUADS);
 			glTexCoord2d(0, 1);
-			glVertex2d(x - offX, y - offY);
+			glVertex2d(aabb.x - offX, aabb.y - offY);
 			glTexCoord2d(1, 1);
-			glVertex2d(x - offX + width, y - offY);
+			glVertex2d(aabb.x - offX + aabb.width, aabb.y - offY);
 			glTexCoord2d(1, 0);
-			glVertex2d(x - offX + width, y - offY + height);
+			glVertex2d(aabb.x - offX + aabb.width, aabb.y - offY + aabb.height);
 			glTexCoord2d(0, 0);
-			glVertex2d(x - offX, y - offY + height);
+			glVertex2d(aabb.x - offX, aabb.y - offY + aabb.height);
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
 	}
-
-	public int getX() {
-		return x;
-	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
+	
+	public AABB getAABB() {
+		return aabb;
 	}
 
 	public Texture getTex() {

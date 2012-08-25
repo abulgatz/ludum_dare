@@ -5,7 +5,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 public class Input {
-	boolean[] keys, mouse;
+	boolean[] keys;
 	
 	public Input() {
 		keys = new boolean[256];
@@ -16,9 +16,6 @@ public class Input {
 		if(!Display.isActive()) {
 			for(int i = 0; i < keys.length; i++) {
 				keys[i] = false;
-			}
-			for(int i = 0; i < mouse.length; i++) {
-				mouse[i] = false;
 			}
 			return;
 		}
