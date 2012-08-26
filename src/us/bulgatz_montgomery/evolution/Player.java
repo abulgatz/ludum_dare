@@ -11,12 +11,16 @@ public class Player {
 	final int speed = 3;
 	final int fallSpeed = 8;
 	final int jumpSpeed = 20;
+	static final long WALK_FRAME_DELAY = 500000000L; // 0.5s
+	final float[][] frameColors = {{0.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 0.0f}, {1.0f, 0.0f, 0.0f}};
 	
 	protected AABB aabb;
 	protected Texture tex;
 	protected Input input;
 	protected Level level;
 	protected int clocks;
+	protected long frameChangeTime;
+	protected int frame;
 	
 	int velX, velY;
 	
@@ -29,9 +33,10 @@ public class Player {
 	public void render() {
 		int posX = Display.getWidth() / 2;
 		int posY = (int) aabb.y;
+		float[] colors = frameColors[frame];
 		
 		glBegin(GL_QUADS);
-			glColor3f(0.0f, 1.0f, 1.0f);
+			glColor3f(colors[0], colors[1], colors[2]);
 			
 			glVertex2d(posX - aabb.width / 2, posY);
 			glVertex2d(posX + aabb.width / 2, posY);
@@ -50,6 +55,20 @@ public class Player {
 	public int getClocks() {
 		return clocks;
 	}
+	
+	private void walkAnimation() {
+		if(!onGround())
+			return;
+		if(System.nanoTime() >= frameChangeTime + WALK_FRAME_DELAY) {
+			frame = (frame == 0) ? 1 : 0;
+			frameChangeTime = System.nanoTime();
+		}
+	}
+	
+	public boolean onGround() {
+		AABB oneBelow = new AABB(aabb.x, aabb.y - 2, aabb.width, aabb.height);
+		return level.collidesPlatform(oneBelow);
+	}
 
 	public void think() {
 		input.poll();
@@ -60,6 +79,7 @@ public class Player {
 		if(input.keyDown(Keyboard.KEY_A)) {
 			if(velX > -speed)
 				velX--;
+			walkAnimation();
 			// Move 1 pixel at a time for precise collision
 			for(int i = 0; i < Math.abs(velX); i++) {
 				newloc.x = aabb.x - 1;
@@ -72,6 +92,7 @@ public class Player {
 		else if(input.keyDown(Keyboard.KEY_D)) {
 			if(velX < speed)
 				velX++;
+			walkAnimation();
 			// Move 1 pixel at a time for precise collision
 			for(int i = 0; i < Math.abs(velX); i++) {
 				newloc.x = aabb.x + 1;
@@ -88,10 +109,9 @@ public class Player {
 		
 		// Jump
 		if(input.keyDown(Keyboard.KEY_W)) {
-			newloc = new AABB(aabb);
-			newloc.y--;
-			if(level.collidesPlatform(newloc))
+			if(onGround()) {
 				velY = jumpSpeed;
+			}
 		}
 		
 		// Take care of gravity
@@ -112,6 +132,14 @@ public class Player {
 		if(aabb.y < 0) {
 			aabb.y = 0;
 			// DIE
+		}
+		
+		// Switch to jump frame if in air
+		if(!onGround()) {
+			frame = 2;
+		}
+		else if(frame == 2) {
+			frame = 0;
 		}
 		
 		// Try to collect clocks
