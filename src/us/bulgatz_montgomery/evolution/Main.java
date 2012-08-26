@@ -60,19 +60,30 @@ public class Main {
 		level.render(startX, 0);
 		player.render();
 		
+		final int clockX = 10, clockY = 10;
 		Assets.TEX_CLOCK.bind();
 		glEnable(GL_BLEND);
 		glBegin(GL_QUADS);
 			glTexCoord2d(0, 0);
-			glVertex2d(10, Display.getHeight() - 10);
+			glVertex2d(clockX, Display.getHeight() - clockX);
 			glTexCoord2d(1, 0);
-			glVertex2d(10 + Assets.TEX_CLOCK.getWidth(), Display.getHeight() - 10);
+			glVertex2d(clockX + Assets.TEX_CLOCK.getWidth(), Display.getHeight() - clockX);
 			glTexCoord2d(1, 1);
-			glVertex2d(10 + Assets.TEX_CLOCK.getWidth(), Display.getHeight() - (10 + Assets.TEX_CLOCK.getHeight()));
+			glVertex2d(clockX + Assets.TEX_CLOCK.getWidth(), Display.getHeight() - (clockX + Assets.TEX_CLOCK.getHeight()));
 			glTexCoord2d(0, 1);
-			glVertex2d(10, Display.getHeight() - (10 + Assets.TEX_CLOCK.getHeight()));
+			glVertex2d(clockX, Display.getHeight() - (clockX + Assets.TEX_CLOCK.getHeight()));
 		glEnd();
 		glDisable(GL_BLEND);
-		Font.drawString("" + player.getClocks(), 20 + Assets.TEX_CLOCK.getWidth(), 10 + Assets.TEX_CLOCK.getWidth() / 2 - 12, 3.0);
+		
+		// Clock text
+		int sx = clockX + Assets.TEX_CLOCK.getWidth() + 10;
+		int sy = Assets.TEX_CLOCK.getHeight() / 2 - Font.getHeight(3.0) / 2 + clockY;
+		Font.drawString("" + player.getClocks(), sx, sy, 3.0);
+		
+		// Year text
+		final int PIXELS_PER_YEAR = 50;
+		String year = String.format("Year: %04d", (player.getAABB().x / PIXELS_PER_YEAR));
+		sx = Display.getWidth() - Font.getWidth(year, 3.0) - 10;
+		Font.drawString(year, sx, sy, 3.0);
 	}
 }

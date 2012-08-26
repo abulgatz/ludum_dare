@@ -32,4 +32,12 @@ public class Font {
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
 	}
+	
+	public static int getHeight(double scale) {
+		return (int) Math.ceil(FONT_SIZE * scale);
+	}
+	
+	public static int getWidth(String str, double scale) {
+		return (int) Math.ceil(FONT_SIZE * scale * str.length());
+	}
 }
