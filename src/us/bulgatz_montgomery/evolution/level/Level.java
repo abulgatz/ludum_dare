@@ -22,6 +22,8 @@ import us.bulgatz_montgomery.evolution.Texture;
 public class Level {
 	final int TIMEPERIOD_WIDTH = 640*10;
 	
+	final int REPEAT_WIDTH = 144;
+	
 	protected int width;
 	protected Texture background;
 	protected List<Platform>[] platformlist;
@@ -90,9 +92,14 @@ public class Level {
 		return false;
 	}
 	
+	private int platformWidth(int multiple) {
+		return REPEAT_WIDTH * multiple;
+	}
+	
 	private void genPast() {
 		platforms = new ArrayList<Platform>();
-		platforms.add(new Platform(0, 0, 144*4, 80, Assets.TEX_PLATFORM_REPEAT_PAST, Assets.TEX_PLATFORM_LEFT_PAST, Assets.TEX_PLATFORM_RIGHT_PAST));
+		platforms.add(new Platform(0, 10, platformWidth(4), 80, Assets.TEX_PLATFORM_REPEAT_PAST, Assets.TEX_PLATFORM_LEFT_PAST, Assets.TEX_PLATFORM_RIGHT_PAST));
+		platforms.add(new Platform(platformWidth(5), 150, platformWidth(1), 80, Assets.TEX_PLATFORM_REPEAT_PAST, Assets.TEX_PLATFORM_LEFT_PAST, Assets.TEX_PLATFORM_RIGHT_PAST));
 		
 		entities = new ArrayList<Clock>();
 		entities.add(new Clock(50, 140, 36, 42, Assets.TEX_CLOCK));
